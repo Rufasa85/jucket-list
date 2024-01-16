@@ -12,8 +12,14 @@ export default function Todo(props) {
         e.stopPropagation();
         setIsEditing(true)
     }
+
+    const toggleComplete = (e)=>{
+      if(e.target.matches(".Todo")||e.target.matches("h3")||e.target.matches("h4")){
+        props.toggleComplete(props.id,props.complete)
+      }
+    }
   return (
-    <div className={`Todo ${props.priority} ${props.complete?"complete":""}`} onClick={()=>props.toggleComplete(props.id)}>
+    <div className={`Todo ${props.priority} ${props.complete?"complete":""}`} onClick={toggleComplete}>
         <h3>{props.task}</h3>
         <h4>Priority: {props.priority}</h4>
         <button onClick={editHandle}>Edit</button>

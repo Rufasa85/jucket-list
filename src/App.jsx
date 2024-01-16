@@ -80,33 +80,53 @@ const logout = ()=>{
 
 //todo methods
 const addTodo = todObj=>{
-  todObj.id= todos[0]?todos[todos.length-1].id+1:1;
-  setTodos([...todos,todObj])
+  API.createTodo(token,todObj).then(newTodo=>{
+    API.getTodos(token).then(allTodos=>{
+      setTodos(allTodos)
+    }).catch(err=>{
+      console.log(err)
+    })
+  }).catch(err=>{
+    console.log(err)
+  })
 }
 
 const editTodo = (id,obj)=>{
-  console.log("edit me!");
-  console.log('id', id)
-  console.log('obj', obj)
-  const todosCopy = [...todos];
-  const idx = todosCopy.findIndex(tod=>tod.id==id);
-  todosCopy.splice(idx,1,obj)
-  console.log('todoCopy', todosCopy)
-  setTodos(todosCopy)
+  API.editTodo(token,id,obj).then((data)=>{
+    API.getTodos(token).then(allTodos=>{
+      setTodos(allTodos)
+    }).catch(err=>{
+      console.log(err)
+    })
+  }).catch(err=>{
+    console.log(err)
+  })
+
+}
+
+const toggleComplete = (id,comp)=>{
+  API.editTodo(token,id,{complete:!comp}).then((data)=>{
+    API.getTodos(token).then(allTodos=>{
+      setTodos(allTodos)
+    }).catch(err=>{
+      console.log(err)
+    })
+  }).catch(err=>{
+    console.log(err)
+  })
+
 }
 
 const delTodo = id=>{
-  const filteredTodos = todos.filter(tod=>tod.id!=id);
-  setTodos(filteredTodos)
-}
-const toggleComplete = id=>{
-  const todosCopy = [...todos];
-  todosCopy.forEach(tod=>{
-    if(tod.id==id){
-      tod.complete= !tod.complete
-    }
+  API.deleteTodo(token,id).then((data)=>{
+    API.getTodos(token).then(allTodos=>{
+      setTodos(allTodos)
+    }).catch(err=>{
+      console.log(err)
+    })
+  }).catch(err=>{
+    console.log(err)
   })
-  setTodos(todosCopy)
 }
 
   return (
