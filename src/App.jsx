@@ -1,6 +1,7 @@
-import { useState } from 'react'
+import { useState,useEffect } from 'react'
 import Todo from './Todo'
 import TodoForm from './TodoForm';
+
 
 
 function App() {
@@ -21,6 +22,16 @@ function App() {
   priority:"low",
   complete:false
 }])
+
+useEffect(()=>{
+  fetch("http://localhost:3000/api/todos",{
+    headers:{
+      Authorization:`Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJqb2VAam9lLmpvZSIsImlhdCI6MTcwNTM2Mzc0NSwiZXhwIjoxNzA1MzcwOTQ1fQ.BNHKqUzTTsNnLPPlY6wpQTMObbgv2G0qpAYvpszErAg`
+    }
+  }).then(res=>res.json()).then(data=>{
+    console.log('data', data)
+  })
+},[])
 
 const addTodo = todObj=>{
   todObj.id= todos[0]?todos[todos.length-1].id+1:1;
